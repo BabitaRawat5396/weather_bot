@@ -38,7 +38,6 @@ const ManageMessage = () => {
     fetchData();
   }, [dispatch]); // Add dispatch as a dependency
 
-  // Check if frequencies is defined before accessing its values
   const messageLimit = frequencies?.[0]?.value || 0;
   const resetDuration = frequencies?.[1]?.value || 0;
 
