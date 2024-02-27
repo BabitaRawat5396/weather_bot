@@ -4,16 +4,33 @@ const {
   deleteApiKey,
 } = require("../service/apiKeyServices");
 
+async function filterData() {
+  try {
+    const apiKeys = await getApiKey();
+
+    // Extract only the desired API keys
+    const filteredApiKeys = apiKeys.filter((api) => {
+      return (
+        api.name === "BOT_TOKEN" ||
+        api.name === "WEATHER_API_KEY" ||
+        api.name === "JWT_KEY_SECRET"
+      );
+    });
+    return filteredApiKeys;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
 // Fetch API keys
 exports.getApiKeys = async (req, res) => {
   try {
-    const apiKeys = await getApiKey();
-    // const filteredApiKeys = apiKeys.slice(0, 3);
+    const filteredApiKeys = await filterData();
 
     return res.status(200).json({
       success: true,
-      apis: apiKeys,
-      message: "Succesfully fetched all apis",
+      apis: filteredApiKeys,
+      message: "Successfully fetched desired APIs",
     });
   } catch (error) {
     res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -30,8 +47,8 @@ exports.updateApiKey = async (req, res) => {
 
     const success = await updateApiKey(apiKeyName, newApiKey);
     if (success) {
-      const apiKeys = await getApiKey();
-      const filteredApiKeys = apiKeys.slice(0, 3);
+      const filteredApiKeys = await filterData();
+
       res.status(200).json({
         success: true,
         message: "API key updated successfully",
@@ -55,8 +72,8 @@ exports.updateApiKey = async (req, res) => {
 //     }
 //     const success = await deleteApiKey(apiKeyName);
 //     if (success) {
-//       const apiKeys = await getApiKey();
-//       const filteredApiKeys = apiKeys.slice(0, 3);
+//        const filteredApiKeys = await filterData();
+
 //       res.status(200).json({
 //         success: true,
 //         message: "API key deleted successfully",

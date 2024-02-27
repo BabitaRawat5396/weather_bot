@@ -37,7 +37,7 @@ const ApiKeyCard = ({ api }) => {
         </div>
       ) : (
         <p className="api-key">
-          <strong>API Key:</strong> {api.key}
+          <strong>API Key:</strong> {api.value}
         </p>
       )}
       <div>

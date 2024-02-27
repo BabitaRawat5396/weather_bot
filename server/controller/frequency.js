@@ -1,10 +1,23 @@
 const { getApiKey } = require("../service/apiKeyServices");
 const { updateFrequency } = require("../service/messageFrequency");
 
-exports.getFrequencies = async (req, res) => {
+async function filterData() {
   try {
     const apiKeys = await getApiKey();
-    const filteredApiKeys = apiKeys.slice(6);
+
+    // Extract only the desired API keys
+    const filteredApiKeys = apiKeys.filter((api) => {
+      return api.name === "MESSAGE_LIMIT" || api.name === "RESET_DURATION";
+    });
+    return filteredApiKeys;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+exports.getFrequencies = async (req, res) => {
+  try {
+    const filteredApiKeys = await filterData();
 
     return res.status(200).json({
       success: true,
@@ -26,8 +39,8 @@ exports.updateFrequency = async (req, res) => {
 
     const success = await updateFrequency(messageLimit, resetDuration);
     if (success) {
-      const apiKeys = await getApiKey();
-      const filteredApiKeys = apiKeys.slice(0, 3);
+      const filteredApiKeys = await filterData();
+
       return res.status(200).json({
         success: true,
         frequencies: filteredApiKeys,
