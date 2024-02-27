@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+
+import Login from "./page/Login";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ManageAPIKeys from "./component/Admin/ManageAPIKeys";
+import ManageMessage from "./component/Admin/ManageMessage";
+import Dashboard from "./page/Dashboard";
+import Users from "./component/Admin/ManageUsers";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route index element={<ManageAPIKeys />} />
+          <Route path="/dashboard/manage-keys" element={<ManageAPIKeys />} />
+          <Route path="/dashboard/manage-message" element={<ManageMessage />} />
+          <Route path="/dashboard/users" element={<Users />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
