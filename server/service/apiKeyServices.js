@@ -1,10 +1,10 @@
 // Fetch API keys from .env file
 exports.getApiKey = async () => {
   try {
-    const environmentVariables = {};
+    const environmentVariables = [];
 
     Object.keys(process.env).forEach((key) => {
-      environmentVariables[key] = process.env[key];
+      environmentVariables.push({ name: key, value: process.env[key] });
     });
 
     return environmentVariables;

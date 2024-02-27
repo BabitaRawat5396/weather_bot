@@ -30,6 +30,7 @@ const ManageMessage = () => {
     const fetchData = async () => {
       try {
         await dispatch(getFrequencies());
+        console.log(frequencies);
         const messageLimit = frequencies[0].key;
         const resetDuration = frequencies[1].key;
         setFormData({
