@@ -30,20 +30,25 @@ const ManageMessage = () => {
     const fetchData = async () => {
       try {
         await dispatch(getFrequencies());
-        console.log(frequencies);
-        const messageLimit = frequencies[0].key;
-        const resetDuration = frequencies[1].key;
-        setFormData({
-          messageLimit,
-          resetDuration,
-        });
       } catch (error) {
         console.log("Error fetching frequencies:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]); // Add dispatch as a dependency
+
+  // Check if frequencies is defined before accessing its values
+  const messageLimit = frequencies?.[0]?.value || 0;
+  const resetDuration = frequencies?.[1]?.value || 0;
+
+  // Set initial form data with values from frequencies
+  useEffect(() => {
+    setFormData({
+      messageLimit,
+      resetDuration,
+    });
+  }, [frequencies]);
 
   return (
     <div className="manage-message-container">
