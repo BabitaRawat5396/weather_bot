@@ -8,11 +8,11 @@ const {
 exports.getApiKeys = async (req, res) => {
   try {
     const apiKeys = await getApiKey();
-    const filteredApiKeys = apiKeys.slice(0, 3);
+    // const filteredApiKeys = apiKeys.slice(0, 3);
 
     return res.status(200).json({
       success: true,
-      apis: filteredApiKeys,
+      apis: apiKeys,
       message: "Succesfully fetched all apis",
     });
   } catch (error) {
