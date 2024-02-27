@@ -14,11 +14,11 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Initialize the Telegram Bot
-const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
-
 // database connection
 connect();
+
+// Initialize the Telegram Bot
+const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
 app.use(express.json());
 app.use(cookieParser());
