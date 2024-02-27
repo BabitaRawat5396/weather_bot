@@ -1,19 +1,13 @@
-const fs = require("fs");
-const path = require("path");
-
 // Fetch API keys from .env file
 exports.getApiKey = async () => {
   try {
-    const envPath = path.resolve(__dirname, "..", ".env");
-    const envContents = fs.readFileSync(envPath, "utf8");
+    const environmentVariables = {};
 
-    const lines = envContents.split("\n");
-    const apis = lines.map((line) => {
-      const [key, value] = line.split("=");
-      return { name: key.trim(), key: value.trim() };
+    Object.keys(process.env).forEach((key) => {
+      environmentVariables[key] = process.env[key];
     });
 
-    return apis;
+    return environmentVariables;
   } catch (error) {
     console.error("Error reading .env file:", error);
     return [];
@@ -23,14 +17,7 @@ exports.getApiKey = async () => {
 // Update API key
 exports.updateApiKey = async (apiKeyName, newApiKey) => {
   try {
-    const envPath = path.resolve(__dirname, "..", ".env");
-    let envContents = fs.readFileSync(envPath, "utf8");
-
-    const regex = new RegExp(`${apiKeyName}\\s*=\\s*(.+)`);
-    envContents = envContents.replace(regex, `${apiKeyName}=${newApiKey}`);
-
-    fs.writeFileSync(envPath, envContents);
-
+    process.env[apiKeyName] = newApiKey;
     return true;
   } catch (error) {
     console.error("Error updating API key:", error);
@@ -41,22 +28,10 @@ exports.updateApiKey = async (apiKeyName, newApiKey) => {
 // Delete API key
 // exports.deleteApiKey = async (apiKeyName) => {
 //   try {
-//     // Load the contents of the .env file
-//     const envPath = path.resolve(__dirname, "..", ".env");
-//     let envContents = fs.readFileSync(envPath, "utf8");
-
-//     // Remove the API key line
-//     envContents = envContents.replace(
-//       new RegExp(`${apiKeyName}\\s*=\\s*(.+)`),
-//       ""
-//     );
-
-//     // Write the updated contents back to the .env file
-//     fs.writeFileSync(envPath, envContents);
-
-//     return true; // Return true if deletion is successful
+//     delete process.env[apiKeyName];
+//     return true;
 //   } catch (error) {
 //     console.error("Error deleting API key:", error);
-//     return false; // Return false if deletion fails
+//     return false;
 //   }
 // };
